@@ -3,6 +3,7 @@ using Csharp.Api.Model;
 using Csharp.Api.Repository.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Globalization;
+using System.Runtime.Intrinsics.X86;
 
 namespace Csharp.Api.Repository
 {
@@ -19,14 +20,15 @@ namespace Csharp.Api.Repository
         public async Task<ReturnModel> Create(object model)
         {
             ProdutoModel produto = (ProdutoModel)model;
-
+            produto.dthAlteracaoProduto = DateTime.Now;
+            produto.dthCriadoProduto = DateTime.Now;
             string query = $"use CRUDAngularC; Insert into Produtos" +
-                $" (Nome,Descricao,qtdProduto,vlrProduto,idTpProduto,dthCriacaoProduto,dthAlteraoProduto) values(" +
+                $" (Nome,Descricao,qtdProduto,vlrProduto,TpProduto,dthCriacaoProduto,dthAlteraoProduto) values(" +
                 $"'{produto.Nome}'," +
                 $"'{produto.Descricao}'," +
                 $"{produto.qtdProduto}," +
                 $"{produto.vlrProduto.ToString("F2", new CultureInfo("en-US"))}," +
-                $"{produto.tpProduto.IdTpProduto}," +
+                $"'{produto.tpProduto}'," +
                 $"'{produto.dthCriadoProduto}'," +
                 $"'{produto.dthAlteracaoProduto}')";
             try
@@ -106,7 +108,7 @@ namespace Csharp.Api.Repository
                             qtdProduto = Convert.ToInt32(result["qtdProduto"]),
                             dthCriadoProduto = DateTime.Parse(result["dthCriacaoProduto"].ToString()),
                             dthAlteracaoProduto = DateTime.Parse(result["dthAlteraoProduto"].ToString()),
-                            tpProduto = new TipoProdutoModel { IdTpProduto = Convert.ToInt32(result["idTpProduto"])}
+                            tpProduto = result["TpProduto"].ToString()
                         };
                         listProduto.Add(model);
                     }
@@ -128,7 +130,15 @@ namespace Csharp.Api.Repository
         public async Task<ReturnModel> SelectBy(object model)
         {
             var produtoBusca = (ProdutoModel)model;
-            string query = $"Use CRUDAngularC;Select * from Produtos where idProduto = {produtoBusca.IdProduto}";
+            string query = $"declare\n" +
+                $"@nome varchar(255) = '{produtoBusca.Nome}' ," +
+                $"@tpProduto varchar(255) = '{produtoBusca.tpProduto}';" +
+                $" Use CRUDAngularC; " +
+                $"Select* from Produtos " +
+                $"where" +
+                $"(@nome = '' OR Nome like '%' + @nome + '%')" +
+                $"AND(@tpProduto = '' OR tpProduto = @tpProduto)";
+            List<ProdutoModel> produtoList =new List<ProdutoModel> ();
             try
             {
                 SqlConnection conn = new SqlConnection();
@@ -147,12 +157,13 @@ namespace Csharp.Api.Repository
                             Descricao = result["Descricao"].ToString(),
                             vlrProduto = float.Parse(result["vlrProduto"].ToString()),
                             qtdProduto = Convert.ToInt32(result["qtdProduto"]),
-                            dthCriadoProduto = DateTime.Parse(result["dthCriadoProduto"].ToString()),
-                            dthAlteracaoProduto = DateTime.Parse(result["dthAlteracaoProduto"].ToString()),
-                            tpProduto = new TipoProdutoModel { IdTpProduto = Convert.ToInt32(result["idTpProduto"]) }
+                            dthCriadoProduto = DateTime.Parse(result["dthCriacaoProduto"].ToString()),
+                            dthAlteracaoProduto = DateTime.Parse(result["dthAlteraoProduto"].ToString()),
+                            tpProduto = result["TpProduto"].ToString()
                         };
-                    ret.Objeto = produtoResult;
+                        produtoList.Add( produtoResult);
                     }
+                    ret.Objeto = produtoList;
                     ret.Sucesso = true;
                     _sql.Close(conn);
                 }
@@ -171,14 +182,14 @@ namespace Csharp.Api.Repository
         public async Task<ReturnModel> Update(object model)
         {
             ProdutoModel produto = (ProdutoModel)model;
-            string query = $"use CRUDAngularC; Upadate Produtos SET" +
+            produto.dthAlteracaoProduto = DateTime.Now;
+            string query = $"use CRUDAngularC; Update Produtos SET" +
                   $" Nome = '{produto.Nome}'" +
-                  $",Descricaom = '{produto.Descricao}'" +
+                  $",Descricao = '{produto.Descricao}'" +
                   $",qtdProduto = {produto.qtdProduto}" +
                   $",vlrProduto = {produto.vlrProduto.ToString("F2", new CultureInfo("en-US"))}" +
-                  $",idTpProduto = {produto.tpProduto.IdTpProduto}" +
-                  $",dthCriacaoProduto = {produto.dthCriadoProduto}" +
-                  $",dthAlteraoProduto = {produto.dthAlteracaoProduto} where idProduto = {produto.IdProduto} "; 
+                  $",TpProduto = '{produto.tpProduto}'" +
+                  $",dthAlteraoProduto = '{produto.dthAlteracaoProduto}' where idProduto = {produto.IdProduto} "; 
 
             try
             {

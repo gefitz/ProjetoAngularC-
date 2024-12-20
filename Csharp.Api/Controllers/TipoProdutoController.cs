@@ -61,7 +61,7 @@ namespace Csharp.Api.Controllers
                 ret.Sucesso = false;
                 ret.Mensagem = "Deve passar parametro para deletar";
             }
-            var model = _mapper.Map<ProdutoModel>(tpProduto);
+            var model = _mapper.Map<TipoProdutoModel>(tpProduto);
             ret = await _repository.Delete(model);
             if (ret.Sucesso) { return Ok(ret); }
             else { return BadRequest(ret); }
@@ -74,7 +74,7 @@ namespace Csharp.Api.Controllers
                 ret.Sucesso = false;
                 ret.Mensagem = "Deve passar parametro de Update";
             }
-            var model = _mapper.Map<ProdutoModel>(tpProduto);
+            var model = _mapper.Map<TipoProdutoModel>(tpProduto);
             ret = await _repository.Update(model);
             if (ret.Sucesso) { return Ok(ret); }
             else { return BadRequest(ret); }

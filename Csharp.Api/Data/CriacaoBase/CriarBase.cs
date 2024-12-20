@@ -26,14 +26,11 @@ namespace Csharp.Api.Data.CriacaoBase
                     await command.ExecuteNonQueryAsync();
                     await _commandSql.Close(conn);
 
-                }
-                if (await GerarTpProduto())
-                {
+                }  
                     if (await GerarProduto())
                     {
                         await GerarVenda();
                     }
-                }
             }
             catch (Exception ex)
             {
@@ -54,9 +51,7 @@ namespace Csharp.Api.Data.CriacaoBase
                 "vlrProduto float not null," +
                 "dthCriacaoProduto datetime not null," +
                 "dthAlteraoProduto datetime not null," +
-                "idTpProduto int," +
-                "constraint fk_idTpProduto_TpProduto foreign key (idTpProduto) references TpProdutos(idTpProduto))";
-
+                "TpProduto varchar(255))";
             try
             {
 
@@ -101,27 +96,6 @@ namespace Csharp.Api.Data.CriacaoBase
             }
             catch (Exception ex) { }
             return ret;
-        }
-        private async Task<bool> GerarTpProduto()
-        {
-            try
-            {
-
-                bool ret = false;
-                string query = "USE CRUDAngularC;CREATE TABLE TpProdutos(idTpProduto INT PRIMARY KEY IDENTITY(1,1),Nome VARCHAR(255) NOT NULL);";
-
-                SqlConnection conn = new SqlConnection();
-                using (conn = await _commandSql.Open(conn))
-                {
-                    var command = new SqlCommand(query, conn);
-                    var result = await command.ExecuteNonQueryAsync();
-                    if (result != 0) { ret = true; }
-                    conn.Close();
-                }
-                return ret;
-            }
-            catch (Exception ex) { }
-            return false;
         }
     }
 }
