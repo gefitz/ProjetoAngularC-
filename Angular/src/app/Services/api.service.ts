@@ -19,13 +19,14 @@ export class ApiService {
   }
   delete(parametro:any){
     var url = this.apiUrl + parametro.endPoint;
-    return this.http.delete<ReturnApiModel>(url,{
-      headers: this.headers,
-      body:parametro.data
-    });
+    return this.http.request<ReturnApiModel>('delete',url,{headers: this.headers,body:parametro.data});
   }
   post(parametro:any){
     const url = this.apiUrl + parametro.endPoint;
-    return this.http.post<ReturnApiModel>(url,{body:parametro.data,headers:this.headers}) 
+    return this.http.post<ReturnApiModel>(url,parametro.data,{headers:this.headers}) 
+  }
+  put(parametro:any){
+    const url = this.apiUrl + parametro.endPoint;
+    return this.http.put<ReturnApiModel>(url,parametro.data,{headers: this.headers});
   }
 }

@@ -1,6 +1,6 @@
 export interface ReturnApiModel{
     objeto: object;
     sucesso: boolean;
-    menssagem?: string;
+    mensagem?: string;
 
 }

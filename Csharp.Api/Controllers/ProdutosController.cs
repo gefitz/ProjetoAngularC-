@@ -43,7 +43,7 @@ namespace Csharp.Api.Controllers
             if (ret.Sucesso) { return Ok(ret); }
             else { return BadRequest(ret); }
         }
-        [HttpGet("buscaProduto")]
+        [HttpPost("buscaProduto")]
         public async Task<ActionResult<ReturnModel>> SelectProdutoBy(ProdutoDTO produto)
         {
             if (produto == null)
