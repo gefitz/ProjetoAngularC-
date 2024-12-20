@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { ProdutoModel } from '../../Models/Produto.model';
 import { ApiService } from '../../Services/api.service';
 import { DatePipe } from '@angular/common';
-import { RouterLink,Router } from '@angular/router';
+import {Router } from '@angular/router';
 import { FormGroup,FormControl,ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-produtotela',
   standalone: true,
-  imports: [RouterLink,ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './produtotela.component.html',
   styleUrl: './produtotela.component.css'
 })
