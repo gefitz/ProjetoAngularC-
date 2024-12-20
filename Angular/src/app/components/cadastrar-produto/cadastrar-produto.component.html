@@ -1,0 +1,62 @@
+<div class="form-container">
+    <form [formGroup]="produtoForm" (ngSubmit)="salvarProduto()">
+      <div class="form-group">
+        <label for="nome">Nome:</label>
+        <input id="nome" formControlName="nome" type="text" class="form-control" />
+        <p style="color:red">
+          
+          @if (produtoForm.get('nome')?.invalid && produtoForm.get('nome')?.touched) {
+            
+            O nome é obrigatório e deve ter no máximo 50 caracteres.
+          }
+        </p>
+        </div>
+  
+      <div class="form-group">
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" formControlName="descricao" class="form-control"></textarea>
+        <p style="color:red">
+        @if(produtoForm.get('descricao')?.invalid && produtoForm.get('descricao')?.touched){
+
+            A descrição é obrigatória e deve ter no máximo 200 caracteres.
+          }
+        </p>
+        
+      </div>
+  
+      <div class="form-group">
+        <label for="tpProduto">Tipo de Produto:</label>
+        <input id="tpProduto" formControlName="tpProduto" type="text" class="form-control" />
+        <p style="color:red"> @if(produtoForm.get('tpProduto')?.invalid && produtoForm.get('tpProduto')?.touched){
+
+          O tipo de produto é obrigatório.
+        }
+      </p>
+        
+      </div>
+  
+      <div class="form-group">
+        <label for="qtdProduto">Quantidade:</label>
+        <input id="qtdProduto" formControlName="qtdProduto" type="number" class="form-control" />
+        <p style="color:red">
+        @if(produtoForm.get('qtdProduto')?.invalid && produtoForm.get('qtdProduto')?.touched){
+            A quantidade deve ser no mínimo 1.
+          }
+        </p>
+      </div>
+  
+      <div class="form-group">
+        <label for="vlrProduto">Valor:</label>
+        <input id="vlrProduto" formControlName="vlrProduto" type="number" class="form-control" />
+        <p style="color:red">
+        @if(produtoForm.get('vlrProduto')?.invalid && produtoForm.get('vlrProduto')?.touched){
+
+            O valor deve ser maior que 0.
+          }
+        </p>
+        
+      </div>
+  
+      <button type="submit" [disabled]="!produtoForm.valid">Salvar</button>
+    </form>
+  </div>

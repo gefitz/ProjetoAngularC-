@@ -88,7 +88,6 @@ namespace Csharp.Api.Repository
                     var command = new SqlCommand(query, conn);
 
                     var result = await command.ExecuteReaderAsync();
-                    if (result == null) { ret.Sucesso = false; ret.Mensagem = "Não foi encontrado Nenhum produto"; }
                     while (result.Read())
                     {
                         TipoProdutoModel model = new TipoProdutoModel
@@ -98,8 +97,17 @@ namespace Csharp.Api.Repository
                         };
                         listProduto.Add(model);
                     }
-                    ret.Objeto = listProduto;
-                    ret.Sucesso = true;
+                    if (listProduto.Count > 0)
+                    {
+
+                        ret.Objeto = listProduto;
+                        ret.Sucesso = true;
+                    }
+                    else
+                    {
+                        ret.Sucesso = false;
+                        ret.Mensagem = "Não foi encontrado Nenhum produto";
+                    }
                     _sql.Close(conn);
                 }
 

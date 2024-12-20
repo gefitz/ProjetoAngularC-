@@ -1,0 +1,37 @@
+<h1>Produtos</h1>
+<button class="btn-cadastrar" routerLink="/Produto/Cadastrar">Cadastrar</button>
+<div class="container-table">
+
+    <table >
+        <thead>
+            <tr>
+                <th>Nome Produto</th>
+                <th>Descrição Produto</th>
+                <th>Tipo de Produto</th>
+                <th>Quantidade</th>
+                <th>Valor</th>
+                <th>Ultima Alteração</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @for (produto of produtoList; track $index) {
+                    <td>{{produto.nome}}</td>
+                    <td>{{produto.descricao}}</td>
+                    <td>{{produto.tpProduto}}</td>
+                    <td>{{produto.qtdProduto}}</td>
+                    <td>R$ {{produto.vlrProduto}}</td>
+                    <td>{{_pipe.transform(produto.dthAlteracaoProduto,'dd/MM/yyyy')}}</td>
+                    <td><button >
+                        <i class="fa-regular fa-pen-to-square"></i>
+                  </button></td>
+                    <td>        
+                        <button (click)="DeletarTpProduto(produto)" >
+                            <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>

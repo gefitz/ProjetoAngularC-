@@ -21,12 +21,12 @@ namespace Csharp.Api.Repository
             ProdutoModel produto = (ProdutoModel)model;
 
             string query = $"use CRUDAngularC; Insert into Produtos" +
-                $" (Nome,Descricao,qtdProduto,vlrProduto,idTpProduto,dthCriacaoProduto,dthAlteraoProduto) values(" +
+                $" (Nome,Descricao,qtdProduto,vlrProduto,TpProduto,dthCriacaoProduto,dthAlteraoProduto) values(" +
                 $"'{produto.Nome}'," +
                 $"'{produto.Descricao}'," +
                 $"{produto.qtdProduto}," +
                 $"{produto.vlrProduto.ToString("F2", new CultureInfo("en-US"))}," +
-                $"{produto.tpProduto.IdTpProduto}," +
+                $"'{produto.tpProduto}'," +
                 $"'{produto.dthCriadoProduto}'," +
                 $"'{produto.dthAlteracaoProduto}')";
             try
@@ -106,7 +106,7 @@ namespace Csharp.Api.Repository
                             qtdProduto = Convert.ToInt32(result["qtdProduto"]),
                             dthCriadoProduto = DateTime.Parse(result["dthCriacaoProduto"].ToString()),
                             dthAlteracaoProduto = DateTime.Parse(result["dthAlteraoProduto"].ToString()),
-                            tpProduto = new TipoProdutoModel { IdTpProduto = Convert.ToInt32(result["idTpProduto"])}
+                            tpProduto = result["TpProduto"].ToString()
                         };
                         listProduto.Add(model);
                     }
@@ -149,7 +149,7 @@ namespace Csharp.Api.Repository
                             qtdProduto = Convert.ToInt32(result["qtdProduto"]),
                             dthCriadoProduto = DateTime.Parse(result["dthCriadoProduto"].ToString()),
                             dthAlteracaoProduto = DateTime.Parse(result["dthAlteracaoProduto"].ToString()),
-                            tpProduto = new TipoProdutoModel { IdTpProduto = Convert.ToInt32(result["idTpProduto"]) }
+                            tpProduto = result["TpProduto"].ToString()
                         };
                     ret.Objeto = produtoResult;
                     }
@@ -176,7 +176,7 @@ namespace Csharp.Api.Repository
                   $",Descricaom = '{produto.Descricao}'" +
                   $",qtdProduto = {produto.qtdProduto}" +
                   $",vlrProduto = {produto.vlrProduto.ToString("F2", new CultureInfo("en-US"))}" +
-                  $",idTpProduto = {produto.tpProduto.IdTpProduto}" +
+                  $",TpProduto = '{produto.tpProduto}'" +
                   $",dthCriacaoProduto = {produto.dthCriadoProduto}" +
                   $",dthAlteraoProduto = {produto.dthAlteracaoProduto} where idProduto = {produto.IdProduto} "; 
 

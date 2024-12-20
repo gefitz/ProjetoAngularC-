@@ -4,6 +4,5 @@
     {
         public int idTpProduto { get; set; }
         public string TipoProduto { get; set; }
-        public string Descricao { get; set; }
     }
 }

@@ -1,0 +1,52 @@
+ /* Tabela */
+ table {
+    border-collapse: collapse;
+    width: 80%px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    height: 100px;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+  }
+
+  th {
+    background-color: #007BFF;
+    color: white;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  button{
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .fa-pen-to-square{
+    color: #007BFF;
+  }
+  .fa-trash{
+    color: #e63f3f;
+  }
+  p{  
+    padding:10px;
+    font-size: 18px;
+  }
+  .btn-cadastrar{ 
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: #6be45b ;
+    padding:3px;
+    
+  }
+  .btn-cadastrar:hover{
+    cursor: pointer;
+    background: #6be45b;
+    color: #fff;
+  }
