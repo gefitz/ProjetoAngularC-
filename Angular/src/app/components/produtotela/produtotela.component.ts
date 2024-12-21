@@ -57,14 +57,13 @@ export class ProdutotelaComponent {
   BuscarProduto(){
     if(this.buscarProduto){
       var produto = this.buscarProduto.value;
-      console.log(produto);
       this.api.post({endPoint:'Produtos/buscaProduto',data:produto}).subscribe({
         next: (data) => {
           if(data.sucesso){
             var ret = JSON.stringify(data.objeto);
             this.produtoList = JSON.parse(ret);
           }else{
-            console.log(data.mensagem);
+            alert(data.mensagem);
           }
         },
         error: (data) =>{
@@ -86,7 +85,7 @@ export class ProdutotelaComponent {
             var ret = JSON.stringify(data.objeto);
             this.produtoList = JSON.parse(ret);
           }else{
-            console.log(data.mensagem);
+            alert(data.mensagem);
           }
         }
       })
