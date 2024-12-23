@@ -1,35 +1,19 @@
 .form-container {
-    width: 20vw;
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
     background: #f9f9f9;
+    width: 27vw;
   }
-  
-  .form-group {
-    margin-bottom: 15px;
+  .form-field{
+    margin: 5px;
+    padding: 5px;
   }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+  .w400{
+    width: 455px;
   }
-  
-  input, textarea, select, button {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  small {
-    color: red;
-    font-size: 12px;
-  }
-  button:hover{
-    cursor: pointer;
+  .btn-form{
+    display: flex;
+    justify-content: end;
   }

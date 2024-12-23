@@ -1,64 +1,52 @@
 <div class="form-container">
     <form [formGroup]="produtoForm" (ngSubmit)="salvarProduto()">
-      <input id="idProduto" formControlName="idProduto" hidden>
-      <div class="form-group">
-        <label for="nome">Nome:</label>
-        <input id="nome" formControlName="nome" type="text" class="form-control" />
-        <small>
+      <mat-form-field class="form-field">
+        <input id="idProduto" formControlName="idProduto" hidden>
+          <mat-label for="nome">Nome:</mat-label>
+          <input matInput id="nome" formControlName="nome" type="text" class="form-control" /> 
+          <mat-error>O nome é obrigatório e deve ter no máximo 50 caracteres.</mat-error>
+      </mat-form-field>
+        
+        <mat-form-field class="form-field">
+
+          <mat-label for="tpProduto">Tipo de Produto:</mat-label>
+          <input matInput id="tpProduto" formControlName="tpProduto" type="text" class="form-control" />
+          <mat-error>
+              O tipo de produto é obrigatório.
+          </mat-error>
           
-          @if (produtoForm.get('nome')?.invalid && produtoForm.get('nome')?.touched) {
-            
-            O nome é obrigatório e deve ter no máximo 50 caracteres.
-          }
-        </small>
-      </div>
-  
-      <div class="form-group">
-        <label for="descricao">Descrição:</label>
-        <textarea id="descricao" formControlName="descricao" class="form-control"></textarea>
-        <small>
-        @if(produtoForm.get('descricao')?.invalid && produtoForm.get('descricao')?.touched){
-
-            A descrição é obrigatória e deve ter no máximo 200 caracteres.
-          }
-        </small>
+        </mat-form-field>
         
-      </div>
-  
-      <div class="form-group">
-        <label for="tpProduto">Tipo de Produto:</label>
-        <input id="tpProduto" formControlName="tpProduto" type="text" class="form-control" />
-        <small> 
-          @if(produtoForm.get('tpProduto')?.invalid && produtoForm.get('tpProduto')?.touched){
+        <mat-form-field class="form-field">
 
-          O tipo de produto é obrigatório.
-        }
-      </small>
+          <mat-label for="qtdProduto">Quantidade:</mat-label>
+          <input matInput id="qtdProduto" formControlName="qtdProduto" type="number" class="form-control" />
+          <mat-error>
+              A quantidade deve ser no mínimo 1
+          </mat-error>
+      </mat-form-field>
         
-      </div>
-  
-      <div class="form-group">
-        <label for="qtdProduto">Quantidade:</label>
-        <input id="qtdProduto" formControlName="qtdProduto" type="number" class="form-control" />
-        <small>
-        @if(produtoForm.get('qtdProduto')?.invalid && produtoForm.get('qtdProduto')?.touched){
-            A quantidade deve ser no mínimo 1.
-          }
-        </small>
-      </div>
-  
-      <div class="form-group">
-        <label for="vlrProduto">Valor:</label>
-        <input id="vlrProduto" formControlName="vlrProduto" type="number" class="form-control" />
-        <small>
-        @if(produtoForm.get('vlrProduto')?.invalid && produtoForm.get('vlrProduto')?.touched){
+        <mat-form-field class="form-field">
+
+          <mat-label for="vlrProduto">Valor:</mat-label>
+          <input matInput id="vlrProduto" formControlName="vlrProduto" type="number" class="form-control" />
+          <mat-error>
 
             O valor deve ser maior que 0.
-          }
-        </small>
-        
-      </div>
-      <button type="submit" [disabled]="!produtoForm.valid">Salvar</button>
-      <button type="button" routerLink="">Voltar</button>
-    </form>
-  </div>
+          </mat-error>     
+                   
+          
+        </mat-form-field>
+        <mat-form-field class="form-field w400">
+          <mat-label for="descricao">Descrição:</mat-label>
+          <textarea matInput id="descricao" formControlName="descricao" class="form-control"></textarea>
+          <mat-error> descrição é obrigatória e deve ter no máximo 200 caracteres.</mat-error>
+        </mat-form-field>
+        <br>
+        <div class="btn-form">
+
+          <button mat-flat-button type="submit" [disabled]="!produtoForm.valid" color="primary" style="margin-right: 5px;">Salvar</button>
+          <button mat-flat-button type="button" routerLink="" color="sencudary">Voltar</button>
+        </div>
+      </form>
+    </div>
