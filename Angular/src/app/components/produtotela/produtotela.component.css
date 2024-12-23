@@ -1,96 +1,26 @@
  /* Tabela */
- table {
-    border-collapse: collapse;
-    width: 80%;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    height: 100px;
-    margin: 10px 20px;
-  }
-
-  th, td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: center;
-  }
-
-  th {
-    background-color: #007BFF;
-    color: white;
-  }
-
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  button{
-    background: transparent;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  .fa-pen-to-square{
-    color: #007BFF;
-  }
-  .fa-trash{
-    color: #e63f3f;
-  }
-  p{  
-    padding:10px;
-    font-size: 18px;
-  }
-  .btn-cadastrar{ 
-    border: 1px solid;
-    border-radius: 5px;
-    border-color: #6be45b ;
-    padding:3px;
-    margin: 5px;
-  }
-  .btn-cadastrar:hover{
-    cursor: pointer;
-    background: #6be45b;
-    color: #fff;
-  }
+.table{ 
+  padding: 10px;
+}
   .form-container{
     margin-top: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 80%;
+    width: 40vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
-form {
-    margin: 5px;
-    padding: 5px;
-    display: flex;
-  }
-  form label{
-    display: block;
-    padding-left: 5px;
-  }
-  input{
-    margin: 5px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    padding: 5px;
-  }
-  .btn-buscar{
-
-    font-size: 17px;
-    display: flex;
-    justify-content: center;
-    height: 30px;
-    padding: 5px 10px;
-    box-sizing: border-box;
-    margin-top: 5px;
-    border: 1px solid #3386df;
-    border-radius: 5px;
-    position: relative;
-    top:16px;
-    background: #3386df;
-    color: #fff;
-  }
+.form-group{
+  margin: 5px;
+  padding: 1px;
+}
   h4{
     margin: 10px;
+  }
+  form{
+    padding: 0 10px;
+  }
+  button{
+    padding: 5px;
   }
