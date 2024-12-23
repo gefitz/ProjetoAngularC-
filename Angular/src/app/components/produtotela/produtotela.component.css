@@ -7,13 +7,12 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 40vw;
-    display: flex;
+    display: flex;  
     flex-direction: column;
     justify-content: center;
   }
-.form-group{
-  margin: 5px;
-  padding: 1px;
+.form-group{  
+  margin-top: 10px;
 }
   h4{
     margin: 10px;
