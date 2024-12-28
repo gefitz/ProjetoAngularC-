@@ -23,7 +23,6 @@ import {MatMenuModule} from '@angular/material/menu'
     MatListModule,
     MatIconModule,
     AsyncPipe,
-    NgIf,
     RouterLink,
     RouterOutlet,
     MatMenuModule
