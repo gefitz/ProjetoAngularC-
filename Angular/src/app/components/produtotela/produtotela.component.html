@@ -1,51 +1,57 @@
-<h1>Produtos</h1>
-
     <div class="form-container">
-        <form [formGroup]="buscarProduto" (ngSubmit)="BuscarProduto()">
-            <div class="form-group">
-                <label for="nome">Nome Produto</label>
-                <input id="nome" type="text" formControlName="nome" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="tpProduto">Tipo de Produto</label>
-                <input id="tpProduto" type="text" formControlName="tpProduto" class="form-control">
-            </div>
-            <button type="submit" class="btn-buscar">Buscar</button>
+        <form [formGroup]="buscarProduto" (ngSubmit)="BuscarProduto()" class="form">
+            <mat-form-field class="form-group">
+                <mat-label for="nome">Nome Produto</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Arroz" #input>
+            </mat-form-field>
         </form>
-        <div class="container-table">
-            
-            <table >
-                <thead>
-                    <tr>
-                        <th>Nome Produto</th>
-                        <th>Descrição Produto</th>
-                        <th>Tipo de Produto</th>
-                        <th>Quantidade</th>
-                        <th>Valor</th>
-                        <th>Ultima Alteração</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        @for (produto of produtoList; track $index) {
-                            <td>{{produto.nome}}</td>
-                            <td>{{produto.descricao}}</td>
-                            <td>{{produto.tpProduto}}</td>
-                            <td>{{produto.qtdProduto}}</td>
-                            <td>R$ {{produto.vlrProduto}}</td>
-                            <td>{{_pipe.transform(produto.dthAlteracaoProduto,'dd/MM/yyyy')}}</td>
-                            <td><button (click)="EditarProduto(produto)" >
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </button></td>
-                            <td>        
-                                <button (click)="DeletarTpProduto(produto)" >
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </td>
-                        }
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-    </div>
+            <div class="table">
+
+                <table mat-table [dataSource]="produtoList" class="mat-elevation-z8" >
+                    <ng-container matColumnDef="nome">
+                        <th mat-header-cell *matHeaderCellDef>Nome Produto</th>
+                        <td mat-cell *matCellDef="let produto"> {{produto.nome}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="descricao">
+                        <th mat-header-cell *matHeaderCellDef="">Descricao</th>
+                        <td mat-cell *matCellDef="let produto"> {{produto.descricao}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="qtdProduto">
+                        <th mat-header-cell *matHeaderCellDef="">Quantidade Produto</th>
+                        <td mat-cell *matCellDef="let produto"> {{produto.qtdProduto}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="vlrProduto">
+                        <th mat-header-cell *matHeaderCellDef="">Valor do Produto</th>
+                        <td mat-cell *matCellDef="let produto"> R$ {{produto.vlrProduto}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="dthAlteracao">
+                        <th mat-header-cell *matHeaderCellDef="">Ultima Alteração</th>
+                        <td mat-cell *matCellDef="let produto"> {{_pipe.transform(produto.dthAlteracaoProduto,'dd/MM/yyyy')}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="btnEditar">
+                        <th mat-header-cell *matHeaderCellDef=""></th>
+                        <td mat-cell *matCellDef="let produto">
+                            <button mat-icon-button color="primary" (click)="EditarProduto(produto)" title="Editar Produto">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="btnDelete">
+                        <th mat-header-cell *matHeaderCellDef=""></th>
+                        <td mat-cell *matCellDef="let produto">
+                            <button mat-icon-button color="warn" (click)="DeletarTpProduto(produto)" title="Deletar Produto">
+                                <mat-icon><span class="material-symbols-outlined">
+                                    delete
+                                    </span></mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row;columns:displayedColumns"></tr>
+                    <div class="mat-row" *matNoDataRow>
+                        <p class="mat-cell" colspan="4" style="display:flex; justify-items: center;">Não foi encontrado nenhum produto</p>
+                    </div>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>        
+            </div>
+            </div>

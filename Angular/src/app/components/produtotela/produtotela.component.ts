@@ -1,21 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ProdutoModel } from '../../Models/Produto.model';
 import { ApiService } from '../../Services/api.service';
 import { DatePipe } from '@angular/common';
 import {Router } from '@angular/router';
 import { FormGroup,FormControl,ReactiveFormsModule } from '@angular/forms';
-
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {MatTableModule,MatTableDataSource} from '@angular/material/table';
+import {MatSort, MatSortModule} from '@angular/material/sort';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatIconModule} from '@angular/material/icon'
 @Component({
   selector: 'app-produtotela',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, 
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatIconModule
+    ],
   templateUrl: './produtotela.component.html',
   styleUrl: './produtotela.component.css'
 })
-export class ProdutotelaComponent {
+export class ProdutotelaComponent{
   buscarProduto: FormGroup;
-  produtoList!: ProdutoModel[];
+  produtoList!: MatTableDataSource<ProdutoModel>;
   _pipe!: DatePipe;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  displayedColumns = ['nome','descricao','qtdProduto','vlrProduto','dthAlteracao','btnEditar','btnDelete']
   constructor(private api:ApiService, private pipe:DatePipe, private router: Router){
     this.BuscarProduto();
     this._pipe = pipe;
@@ -52,7 +68,7 @@ export class ProdutotelaComponent {
       }
   }
   EditarProduto(produto:ProdutoModel){
-    this.router.navigateByUrl("/Produto/Cadastrar", {state: {produto}})
+    this.router.navigateByUrl("/Produto/Editar", {state: {produto}})
   }
   BuscarProduto(){
     if(this.buscarProduto){
@@ -61,7 +77,7 @@ export class ProdutotelaComponent {
         next: (data) => {
           if(data.sucesso){
             var ret = JSON.stringify(data.objeto);
-            this.produtoList = JSON.parse(ret);
+            this.produtoList = new MatTableDataSource(JSON.parse(ret));
           }else{
             alert(data.mensagem);
           }
@@ -91,6 +107,18 @@ export class ProdutotelaComponent {
       })
     }
   }
-  
+  ngAfterViewInit() {
+    this.produtoList.paginator = this.paginator;
+    this.produtoList.sort = this.sort;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.produtoList.filter = filterValue.trim().toLowerCase();
+
+    if (this.produtoList.paginator) {
+      this.produtoList.paginator.firstPage();
+    }
+  }
 
 }

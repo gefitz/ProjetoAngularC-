@@ -1,15 +1,18 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl,FormGroup, Validators,ReactiveFormsModule  } from "@angular/forms"
-import { DatePipe } from '@angular/common';
 import { ProdutoModel } from '../../Models/Produto.model';
 import { ApiService } from '../../Services/api.service';
 import { Router,RouterLink } from '@angular/router';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
 @Component({
   selector: 'app-cadastrar-produto',
   standalone: true,
-  imports: [ReactiveFormsModule,RouterLink],
+  imports: [ReactiveFormsModule,RouterLink,MatFormFieldModule,MatInputModule,MatButtonModule],
   templateUrl: './cadastrar-produto.component.html',
-  styleUrl: './cadastrar-produto.component.css'
+  styleUrl: './cadastrar-produto.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CadastrarProdutoComponent {
   produtoForm: FormGroup;
