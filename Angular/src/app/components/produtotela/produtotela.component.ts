@@ -68,7 +68,7 @@ export class ProdutotelaComponent{
       }
   }
   EditarProduto(produto:ProdutoModel){
-    this.router.navigateByUrl("/Produto/Cadastrar", {state: {produto}})
+    this.router.navigateByUrl("/Produto/Editar", {state: {produto}})
   }
   BuscarProduto(){
     if(this.buscarProduto){
