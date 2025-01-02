@@ -56,7 +56,7 @@ export class VendaComponent implements OnInit{
 
     this.vendaForm = new FormGroup({
       produto: new FormControl('',Validators.required),
-      qtdProduto: new FormControl('',Validators.required),
+      qtdProdutoVendido: new FormControl('',Validators.required),
       vlrProduto: new FormControl('',Validators.required),
       vlrTotal: new FormControl('',Validators.required)
     })
@@ -64,22 +64,23 @@ export class VendaComponent implements OnInit{
 salvarProduto() {
   if(this.vendaForm.valid){
     //Necessario pois se fazer parse e for recolocar o produto ele vira ja com parse,a parti disso n consigo verefica se ja existe na vendaList
-    this.vendaForm.value.produto = JSON.stringify(this.vendaForm.value.produto);
-    this.vendaForm.value.produto = JSON.parse(this.vendaForm.value.produto);
-    var produtoForm = JSON.parse(this.vendaForm.value.produto)
-    if(produtoForm.qtdProduto > this.vendaForm.value.qtdProduto){
-      console.log("Ola");
+    var venda = JSON.parse(JSON.stringify(this.vendaForm.value));
+    try{
+      venda.produto = JSON.parse(venda.produto);
+
+    }catch(error){ console.log(error);}
+    if(parseInt(venda.qtdProdutoVendido) > parseInt(venda.produto.qtdProduto)){
       alert("Quantidade superior ao do estoque");
+      return;
     }
-    var produtoFilter = this.vendaList.filter(produto => produto.produto.idProduto === produtoForm.idProduto);
+    var produtoFilter = this.vendaList.find(produto => produto.produto.idProduto === venda.produto.idProduto);
     
-    if(produtoFilter.length > 0){
-        console.log(produtoFilter);
+    if(produtoFilter){
+        produtoFilter.qtdProdutoVendido = venda.qtdProdutoVendido;
     }else{
-      console.log(produtoForm);
-      this.vendaList.push(this.vendaForm.value);
-      this.tableVenda.data = this.vendaList;
+      this.vendaList.push(venda);
     }
+    this.tableVenda.data = [... this.vendaList];
   }
   this.disabled = false;
 }
@@ -102,10 +103,28 @@ CacularTotal(qtdProduto:Event){
 }
 
 RemoverVenda(produto:any){
-  this.vendaList.filter(venda => venda === produto).pop();;
+  const index = this.vendaList.findIndex(venda => venda === produto);
+  if (index !== -1) {
+    this.vendaList.splice(index, 1);
+    this.tableVenda.data = [... this.vendaList];
+    if(this.vendaList.length === 0)
+      this.disabled = true;
+  }
 }
-  AddVendaToList(){
-
+  FinalizarVenda(){
+    console.log(JSON.stringify(this.vendaList));
+    this.api.post({endPoint:"Venda", data:this.vendaList}).subscribe({
+      next: (data) => {
+        if(data.sucesso){
+          alert("Venda registrada com sucesso");
+        }else{
+          alert(data.mensagem);
+        }
+      },
+      error: (data) => {
+        alert(data)
+      }
+    })
   }
   ConvertOptionJson(produto:any){
     return JSON.stringify(produto);

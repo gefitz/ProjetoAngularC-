@@ -77,7 +77,8 @@ namespace Csharp.Api.Data.CriacaoBase
             string query = "use CRUDAngularC; create table Vendas(" +
                 "idVenda int primary key identity(1,1)," +
                 "idProduto int," +
-                "qtdVendida int," +
+                "qtdProdutoVendido int," +
+                "vlrTotal float," +
                 "dthVenda datetime," +
                 "constraint fk_idProduto_Produtos foreign key (idProduto) references Produtos(idProduto))";
 

@@ -10,27 +10,34 @@ namespace Csharp.Api.Repository
     {
         private readonly CommandSql _sql;
         private ReturnModel ret = new ReturnModel();
+        private readonly ProdutoRepository _produtoRepository;
 
-        public VendaRepository(CommandSql sql)
+        public VendaRepository(CommandSql sql, ProdutoRepository produtoRepository)
         {
             _sql = sql;
+            _produtoRepository = produtoRepository;
         }
         public async Task<ReturnModel> Create(object model)
         {
-            VendaModel venda = (VendaModel)model;
-            for (int i = 0; i < venda.Produto.Count(); i++)
+            List<VendaModel> vendas = (List<VendaModel>)model;
+            for (int i = 0; i < vendas.Count(); i++)
             {
-                var produto = venda.Produto[i];
-                float vlrTotal = produto.vlrProduto * venda.qtdVendida;
-                string query = $"use CRUDAngularC; Insert into Produtos" +
-                    $" (idProduto,qtdVendida,dthVenda) values(" +
-                    $"'{produto.IdProduto}'," +
-                    $"'{venda.qtdVendida}'," +
-                    $"{vlrTotal.ToString("F2", new CultureInfo("en-US"))}," +
+                var produto = vendas[i].Produto;
+                var venda = vendas[i];
+                venda.dthVenda = DateTime.Now;
+                string query = $"use CRUDAngularC; Insert into Vendas" +
+                    $" (idProduto,qtdProdutoVendido,vlrTotal,dthVenda) values(" +
+                    $"{produto.IdProduto}," +
+                    $"{venda.qtdProdutoVendido}," +
+                    $"{venda.vlrTotal.ToString("F2", new CultureInfo("en-US"))}," +
                     $"'{venda.dthVenda}')";
                 try
                 {
+                    //Atualiza o estoque do produto
+                    produto.qtdProduto = produto.qtdProduto - venda.qtdProdutoVendido;
+                    ret = await _produtoRepository.Update(produto);
 
+                    if (!ret.Sucesso) { return ret; }
                     SqlConnection con = new SqlConnection();
                     using (con = await _sql.Open(con))
                     {
@@ -38,6 +45,7 @@ namespace Csharp.Api.Repository
                         var result = await command.ExecuteNonQueryAsync();
                         if (result != 0)
                         {
+
                             ret.Sucesso = true;
                         }
                         else
@@ -66,9 +74,9 @@ namespace Csharp.Api.Repository
 
         public async Task<ReturnModel> SelectAll()
         {
-            string query = "Use CRUDAngularC;Select * from Vendas";
+            string query = "Use CRUDAngularC;Select * from Vendas V join Produtos P on V.idProduto = P.idProduto ";
             List<VendaModel> listProduto = new List<VendaModel>();
-            List<ProdutoModel> produtos = new List<ProdutoModel>();
+            ProdutoModel produtos;
             try
             {
                 SqlConnection conn = new SqlConnection();
@@ -83,11 +91,23 @@ namespace Csharp.Api.Repository
                         VendaModel model = new VendaModel
                         {
                             IdVenda = Convert.ToInt32(result["idVenda"]),
-                            qtdVendida = Convert.ToInt32(result["qtdVendida"].ToString()),
+                            qtdProdutoVendido = Convert.ToInt32(result["qtdProdutoVendido"].ToString()),
+                            vlrTotal = float.Parse(result["vlrTotal"].ToString()),
                             dthVenda = DateTime.Parse(result["dthVenda"].ToString()),
+                            Produto = new ProdutoModel
+                            {
+                                IdProduto = Convert.ToInt32(result["idProduto"]),
+                                Nome = result["Nome"].ToString(),
+                                Descricao = result["Descricao"].ToString(),
+                                vlrProduto = float.Parse(result["vlrProduto"].ToString()),
+                                qtdProduto = Convert.ToInt32(result["qtdProduto"]),
+                                dthCriadoProduto = DateTime.Parse(result["dthCriacaoProduto"].ToString()),
+                                dthAlteracaoProduto = DateTime.Parse(result["dthAlteraoProduto"].ToString()),
+                                tpProduto = result["TpProduto"].ToString()
+                            }
                         };
-                        produtos.Add(new ProdutoModel { IdProduto = Convert.ToInt32(result["idProduto"]) });
-                        model.Produto = produtos;  
+
+
                         listProduto.Add(model);
                     }
                     ret.Objeto = listProduto;
@@ -109,7 +129,7 @@ namespace Csharp.Api.Repository
         {
             var produtoBusca = (ProdutoModel)model;
             string query = $"Use CRUDAngularC;Select * from Vendas where idVenda = {produtoBusca.IdProduto}";
-            List<ProdutoModel> produtos = new List<ProdutoModel> ();
+            ProdutoModel produtos;
             try
             {
                 SqlConnection conn = new SqlConnection();
@@ -124,10 +144,10 @@ namespace Csharp.Api.Repository
                         VendaModel venda = new VendaModel
                         {
                             IdVenda = Convert.ToInt32(result["idVenda"]),
-                            qtdVendida = Convert.ToInt32(result["qtdVendida"].ToString()),
+                            qtdProdutoVendido = Convert.ToInt32(result["qtdVendida"].ToString()),
                             dthVenda = DateTime.Parse(result["dthVenda"].ToString()),
                         };
-                        produtos.Add(new ProdutoModel { IdProduto = Convert.ToInt32(result["idProduto"]) });
+                        produtos = new ProdutoModel { IdProduto = Convert.ToInt32(result["idProduto"]) };
                         venda.Produto = produtos;
                         ret.Objeto = venda;
                     }

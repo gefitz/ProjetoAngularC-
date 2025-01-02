@@ -14,9 +14,9 @@
         
         <mat-form-field class="form-field">
 
-          <mat-label for="qtdProduto">Quantida de Produto:</mat-label>
-          <input matInput id="qtdProduto" 
-          formControlName="qtdProduto" 
+          <mat-label for="qtdProdutoVendido">Quantida de Produto:</mat-label>
+          <input matInput id="qtdProdutoVendido" 
+          formControlName="qtdProdutoVendido" 
           type="number"
            class="form-control" 
            (change)="CacularTotal($event)"
@@ -70,7 +70,7 @@
           </ng-container>
           <ng-container matColumnDef="qtdProduto">
           <th mat-header-cell *matHeaderCellDef>Quantidade de Produto</th>
-          <td mat-cell *matCellDef="let venda"> {{venda.qtdProduto}}</td>
+          <td mat-cell *matCellDef="let venda"> {{venda.qtdProdutoVendido}}</td>
         </ng-container>
         <ng-container matColumnDef="vlrProduto">
           <th mat-header-cell *matHeaderCellDef>Valor Produto</th>
@@ -101,7 +101,7 @@
   </div>
   <div class="btn-form">
     
-    <button mat-flat-button type="submit" [disabled]="disabled" color="primary" style="margin-right: 5px;">Finalizar Venda</button>
+    <button mat-flat-button type="submit" [disabled]="disabled" color="primary" style="margin-right: 5px;" (click)="FinalizarVenda()">Finalizar Venda</button>
     <button mat-flat-button type="button" routerLink="" class="btn-Voltar">Voltar</button>
   </div>
 

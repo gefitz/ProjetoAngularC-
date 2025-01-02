@@ -20,7 +20,7 @@ namespace Csharp.Api.Controllers
             _repository = repository;
         }
         [HttpPost]
-        public async Task<ActionResult<ReturnModel>> Create(VendaDTO venda)
+        public async Task<ActionResult<ReturnModel>> Create(List<VendaDTO> venda)
         {
             if (venda == null)
             {
@@ -28,7 +28,7 @@ namespace Csharp.Api.Controllers
                 ret.Mensagem = "Deve passar produto";
                 return BadRequest(ret);
             }
-            var model = _mapper.Map<VendaModel>(venda);
+            var model = _mapper.Map<List<VendaModel>>(venda);
 
             ret = await _repository.Create(model);
 
