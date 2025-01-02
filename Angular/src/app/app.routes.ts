@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { ProdutotelaComponent } from './components/produtotela/produtotela.component';
 import { CadastrarProdutoComponent } from './components/cadastrar-produto/cadastrar-produto.component';
 import { title } from 'process';
+import { VendaComponent } from './components/venda/venda.component';
 
 export const routes: Routes = [
     {
@@ -18,5 +19,10 @@ export const routes: Routes = [
         path: "Produto/Editar",
         component:CadastrarProdutoComponent,
         data:{title:"Editar Produto"}
+    },
+    {
+        path:"Vendas/PDV",
+        component: VendaComponent,
+        data:{title:"Realizar Venda"}
     }
 ];

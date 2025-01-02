@@ -1,0 +1,18 @@
+.form-container {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f9f9f9;
+  }
+  .form-field{
+    margin: 5px;
+    padding: 5px;
+  }
+  .btn-form{
+    display: flex;
+    justify-content: end;
+    padding: 5px;
+  }
+  .table{
+    margin: 10px 5px;
+    box-shadow: none;
+  }

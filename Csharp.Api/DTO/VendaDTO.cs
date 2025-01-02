@@ -3,8 +3,9 @@
     public class VendaDTO
     {
         public int idVenda { get; set; }
-        public List<ProdutoDTO> idProduto { get; set; }
-        public int qtdVendida { get; set; }
+        public ProdutoDTO Produto { get; set; }
+        public int qtdProdutoVendido { get; set; }
+        public float vlrTotal { get; set; }
         public DateTime dthVenda { get; set; }
     }
 }
