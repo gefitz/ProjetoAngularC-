@@ -13,7 +13,14 @@
         </mat-menu>
       </a>
       
-      <a mat-list-item >Vendas</a>
+      <a mat-list-item [matMenuTriggerFor]="venda" >Vendas
+        <mat-menu #venda="matMenu">
+          <button mat-menu-item routerLink="/Vendas/PDV">
+            Realizar Venda
+          </button>
+          <button mat-menu-item routerLink="/Produto/Cadastrar">Cadastro</button>
+        </mat-menu>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

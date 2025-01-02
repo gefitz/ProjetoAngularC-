@@ -71,30 +71,6 @@ export class ProdutotelaComponent{
     this.router.navigateByUrl("/Produto/Editar", {state: {produto}})
   }
   BuscarProduto(){
-    if(this.buscarProduto){
-      var produto = this.buscarProduto.value;
-      this.api.post({endPoint:'Produtos/buscaProduto',data:produto}).subscribe({
-        next: (data) => {
-          if(data.sucesso){
-            var ret = JSON.stringify(data.objeto);
-            this.produtoList = new MatTableDataSource(JSON.parse(ret));
-          }else{
-            alert(data.mensagem);
-          }
-        },
-        error: (data) =>{
-          var ret = data.error;
-          if(ret.sucesso){
-
-            alert(ret.mensagem)
-          }else{
-            alert(ret.message)
-          }
-        }
-
-      })
-    }else{
-
       this.api.get({endPoint:'Produtos/BuscarTodos'}).subscribe({
         next: (data) =>{
           if(data.sucesso){
@@ -105,13 +81,15 @@ export class ProdutotelaComponent{
           }
         }
       })
-    }
+    
   }
+
+  //Paginação da tabela
   ngAfterViewInit() {
     this.produtoList.paginator = this.paginator;
     this.produtoList.sort = this.sort;
   }
-
+ //Filtro de pesquisa da tabela 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.produtoList.filter = filterValue.trim().toLowerCase();

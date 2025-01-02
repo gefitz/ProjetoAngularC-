@@ -43,8 +43,6 @@ export class NavPageComponent implements OnInit {
         const currentRoute = this.getPage(this.routeActive);
         this.titlePage = currentRoute.snapshot.data['title'];
       })
-      const nav = this.route.getCurrentNavigation();
-      console.log(nav?.extras.state?.['produto']);
   }
     private getPage(page:ActivatedRoute): ActivatedRoute{
       while(page.firstChild){

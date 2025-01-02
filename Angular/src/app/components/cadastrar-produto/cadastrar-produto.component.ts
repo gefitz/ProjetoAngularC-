@@ -18,7 +18,6 @@ export class CadastrarProdutoComponent {
   produtoForm: FormGroup;
   model!: ProdutoModel
   constructor(private api: ApiService, private router: Router) {
-    console.log(this.model);
     const nav = router.getCurrentNavigation();
     this.model = nav?.extras.state?.['produto'];
     this.produtoForm = this.getFormCadastro(this.model)
@@ -68,7 +67,7 @@ export class CadastrarProdutoComponent {
         })
       }
     } else {
-      console.log('Formulário inválido');
+      alert('Formulário inválido');
     }
   }
   getFormCadastro(cadastro: ProdutoModel): FormGroup{
