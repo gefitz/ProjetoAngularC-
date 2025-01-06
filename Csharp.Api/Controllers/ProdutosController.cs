@@ -36,13 +36,6 @@ namespace Csharp.Api.Controllers
             else { return BadRequest(ret); }
 
         }
-        [HttpGet("BuscarTodos")]
-        public async Task<ActionResult<ReturnModel>> SelectAll()
-        {
-            ret = await _repository.SelectAll();
-            if (ret.Sucesso) { return Ok(ret); }
-            else { return BadRequest(ret); }
-        }
         [HttpPost("buscaProduto")]
         public async Task<ActionResult<ReturnModel>> SelectProdutoBy(ProdutoDTO produto)
         {

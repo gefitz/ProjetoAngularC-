@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input'
 import {MatButtonModule} from '@angular/material/button';
@@ -11,7 +11,6 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import { VendaModel } from '../../Models/Venda.model';
-import { json } from 'stream/consumers';
 
 @Component({
   selector: 'app-venda',
@@ -38,27 +37,34 @@ export class VendaComponent implements OnInit{
   disabled:boolean =true;
   vlrTotal:number = 0;
   displayedColumns=['nomeProduto','qtdProduto','vlrProduto','vlrTotal','btnDelete']
-  constructor (private api: ApiService){}
+  @ViewChild(MatPaginator) paginator!: MatPaginator
+  constructor (private api: ApiService){
+    this.tableVenda.paginator = this.paginator;
+  }
 
   //Inicializador da pagina
   ngOnInit(): void { 
-
-    this.api.get({endPoint:'Produtos/BuscarTodos'}).subscribe({
-    next: (data) =>{
-      if(data.sucesso){
-        var ret = JSON.stringify(data.objeto);
-        this.produtoList = JSON.parse(ret);
-      }else{
-        alert(data.mensagem);
-      }
-    }
-  })
+    this.preencheSelect();
 
     this.vendaForm = new FormGroup({
       produto: new FormControl('',Validators.required),
       qtdProdutoVendido: new FormControl('',Validators.required),
       vlrProduto: new FormControl('',Validators.required),
       vlrTotal: new FormControl('',Validators.required)
+    })
+  }
+
+  preencheSelect(){
+    
+    this.api.get({endPoint:'Produtos/BuscarTodos'}).subscribe({
+      next: (data) =>{
+        if(data.sucesso){
+          var ret = JSON.stringify(data.objeto);
+          this.produtoList = JSON.parse(ret);
+        }else{
+          alert(data.mensagem);
+        }
+      }
     })
   }
 salvarProduto() {
