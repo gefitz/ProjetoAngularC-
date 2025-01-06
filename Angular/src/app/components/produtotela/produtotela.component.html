@@ -2,7 +2,7 @@
         <form [formGroup]="buscarProduto" (ngSubmit)="BuscarProduto()" class="form">
             <mat-form-field class="form-group">
                 <mat-label for="nome">Nome Produto</mat-label>
-                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Arroz" #input>
+                <input matInput (input)="BuscarProduto()" placeholder="Ex. Arroz" #input formControlName="nome">
             </mat-form-field>
         </form>
             <div class="table">

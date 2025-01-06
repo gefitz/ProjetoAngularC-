@@ -74,9 +74,16 @@ namespace Csharp.Api.Repository
 
         public async Task<ReturnModel> SelectAll()
         {
-            string query = "Use CRUDAngularC;Select * from Vendas V join Produtos P on V.idProduto = P.idProduto ";
-            List<VendaModel> listProduto = new List<VendaModel>();
-            ProdutoModel produtos;
+            return null;
+        }
+
+        public async Task<ReturnModel> SelectBy(object model)
+        {
+            string query = $"Declare @nome varchar(255) = '{model}';" +
+                "Use CRUDAngularC;Select * from Vendas V join Produtos P on V.idProduto = P.idProduto " +
+                "where" +
+                "(@nome = '' OR p.Nome like '%' + @nome + '%')";
+            List<VendaModel> listVenda = new List<VendaModel>();
             try
             {
                 SqlConnection conn = new SqlConnection();
@@ -88,7 +95,7 @@ namespace Csharp.Api.Repository
                     if (result == null) { ret.Sucesso = false; ret.Mensagem = "Não foi encontrado Nenhum produto"; }
                     while (result.Read())
                     {
-                        VendaModel model = new VendaModel
+                        VendaModel venda = new VendaModel
                         {
                             IdVenda = Convert.ToInt32(result["idVenda"]),
                             qtdProdutoVendido = Convert.ToInt32(result["qtdProdutoVendido"].ToString()),
@@ -108,51 +115,11 @@ namespace Csharp.Api.Repository
                         };
 
 
-                        listProduto.Add(model);
+                        listVenda.Add(venda);
                     }
-                    ret.Objeto = listProduto;
+                    ret.Objeto = listVenda;
                     ret.Sucesso = true;
-                    _sql.Close(conn);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                ret.Sucesso = false;
-                ret.Mensagem = ex.Message;
-
-            }
-            return ret;
-        }
-
-        public async Task<ReturnModel> SelectBy(object model)
-        {
-            var produtoBusca = (ProdutoModel)model;
-            string query = $"Use CRUDAngularC;Select * from Vendas where idVenda = {produtoBusca.IdProduto}";
-            ProdutoModel produtos;
-            try
-            {
-                SqlConnection conn = new SqlConnection();
-                using (conn = await _sql.Open(conn))
-                {
-                    var command = new SqlCommand(query, conn);
-
-                    var result = await command.ExecuteReaderAsync();
-                    if (result == null) { ret.Sucesso = false; ret.Mensagem = "Não foi encontrado Nenhum produto"; }
-                    while (result.Read())
-                    {
-                        VendaModel venda = new VendaModel
-                        {
-                            IdVenda = Convert.ToInt32(result["idVenda"]),
-                            qtdProdutoVendido = Convert.ToInt32(result["qtdVendida"].ToString()),
-                            dthVenda = DateTime.Parse(result["dthVenda"].ToString()),
-                        };
-                        produtos = new ProdutoModel { IdProduto = Convert.ToInt32(result["idProduto"]) };
-                        venda.Produto = produtos;
-                        ret.Objeto = venda;
-                    }
-                    ret.Sucesso = true;
-                    _sql.Close(conn);
+                   conn = await _sql.Close(conn);
                 }
 
             }

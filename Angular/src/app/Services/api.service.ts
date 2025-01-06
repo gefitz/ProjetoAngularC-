@@ -23,7 +23,13 @@ export class ApiService {
   }
   post(parametro:any){
     const url = this.apiUrl + parametro.endPoint;
-    return this.http.post<ReturnApiModel>(url,parametro.data,{headers:this.headers}) 
+    if(parametro.data){
+
+      return this.http.post<ReturnApiModel>(url,parametro.data,{headers:this.headers}) 
+    }else{
+      console.log(url);
+      return this.http.post<ReturnApiModel>(url,{headers:this.headers}) 
+    }
   }
   put(parametro:any){
     const url = this.apiUrl + parametro.endPoint;

@@ -3,6 +3,7 @@ import { ProdutotelaComponent } from './components/produtotela/produtotela.compo
 import { CadastrarProdutoComponent } from './components/cadastrar-produto/cadastrar-produto.component';
 import { title } from 'process';
 import { VendaComponent } from './components/venda/venda.component';
+import { RelatorioVendaComponent } from './components/relatorio-venda/relatorio-venda.component';
 
 export const routes: Routes = [
     {
@@ -24,5 +25,10 @@ export const routes: Routes = [
         path:"Vendas/PDV",
         component: VendaComponent,
         data:{title:"Realizar Venda"}
+    },
+    {
+        path:"Vendas/Relatorio",
+        component:RelatorioVendaComponent,
+        data:{title:"Relatorio de Vendas"}
     }
 ];
